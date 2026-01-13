@@ -6,7 +6,7 @@ This repository holds [the official documentation](https://wiki.gdevelop.io) for
 
 ## Getting Started
 
-| ❔ I want to...                                   | 🚀 What to do                                                                          |
+| ❔ I want to...                                   | 🚀 What to do except learn and create apps and games                                                                       |
 | ------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | Improve or add articles to the documentation      | Head over to [this README](./SYNTAX.md) to understand the syntax of the documentation. |
 | Bring improvements to the documentation interface | Head over to [this README](./CONTRIBUTE.md) to understand how this repository works.   |
