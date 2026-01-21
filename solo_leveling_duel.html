@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Solo Leveling: Hacker Duel</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* p5 creates a canvas element with id "defaultCanvas0" (capital C) */
+    #defaultCanvas0 {
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 0 20px rgba(0,255,0,0.05);
+    }
+  </style>
+</head>
+<body>
+<script>
+let player = { level: 1, xp: 0, hp: 100, maxhp: 100, attack: 10 };
+let enemy = { level: 1, hp: 50, maxhp: 50, attack: 5 };
+let log = [];
+let gamestate = "battle";
+
+function setup() {
+  createCanvas(600, 400);
+  textFont('monospace');
+  log.push("Welcome, high-class coder! Prepare to duel...");
+}
+
+function draw() {
+  background(12);
+  fill(0, 255, 0);
+  textSize(18);
+  text("Solo Leveling: Hacker Duel", 160, 30);
+
+  // player stats
+  textSize(14);
+  text(`Level: ${player.level}  XP: ${player.xp}  HP: ${player.hp}/${player.maxhp}`, 20, 60);
+
+  // enemy stats
+  text(`Enemy Level: ${enemy.level}  HP: ${enemy.hp}/${enemy.maxhp}`, 20, 90);
+
+  // action button
+  if (gamestate === "battle") {
+    fill(0, 255, 0, 100);
+    rect(250, 320, 100, 40, 8);
+    fill(0, 255, 0);
+    textSize(16);
+    text("Attack", 275, 345);
+  } else if (gamestate === "win") {
+    textSize(18);
+    text("You defeated the enemy! Level up!", 160, 200);
+    text("Click to continue...", 220, 230);
+  } else if (gamestate === "lose") {
+    textSize(18);
+    text("You were defeated! Game over.", 180, 200);
+    text("Refresh to try again.", 210, 230);
+  }
+
+  // log
+  fill(0, 255, 0, 180);
+  textSize(12);
+  let y = 120;
+  for (let i = max(0, log.length - 6); i < log.length; i++) {
+    text(log[i], 20, y);
+    y += 18;
+  }
+}
+
+function mousePressed() {
+  // check "attack" button bounds
+  if (gamestate === "battle" && mouseX > 250 && mouseX < 350 && mouseY > 320 && mouseY < 360) {
+    // player attacks
+    let dmg = int(random(player.attack - 2, player.attack + 3));
+    enemy.hp -= dmg;
+    log.push(`You hack for ${dmg} damage!`);
+    if (enemy.hp <= 0) {
+      player.xp += enemy.level * 20;
+      log.push("Enemy defeated!");
+      gamestate = "win";
+      return;
+    }
+
+    // enemy attacks
+    let edmg = int(random(enemy.attack - 2, enemy.attack + 2));
+    player.hp -= edmg;
+    log.push(`Enemy counter-hacks for ${edmg} damage!`);
+    if (player.hp <= 0) {
+      log.push("You were overwhelmed!");
+      gamestate = "lose";
+    }
+  } else if (gamestate === "win") {
+    // level up and respawn tougher enemy
+    player.level++;
+    player.attack += 2;
+    player.maxhp += 10;
+    player.hp = player.maxhp;
+
+    enemy.level++;
+    enemy.maxhp += 20;
+    enemy.hp = enemy.maxhp;
+    enemy.attack += 2;
+
+    gamestate = "battle";
+    log.push(`Level up! You are now level ${player.level}.`);
+  }
+}
+</script>
+</body>
+</html>
